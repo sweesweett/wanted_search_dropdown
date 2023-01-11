@@ -4,10 +4,11 @@ import { FetchData } from '../types/search.type';
 class HttpClient {
   constructor(public baseUrl: string) {
     this.baseUrl = baseUrl;
+    console.log(this.baseUrl);
   }
-  async fetchData(url: string, options: object): Promise<FetchData | undefined> {
-    const { data, status } = await axios(`${this.baseUrl}${url}`, options);
-    return { data, status };
+  fetchData(url: string, options: object = {}): Promise<FetchData> {
+    console.log(this.baseUrl);
+    return axios(`${this.baseUrl}${url}`, options);
   }
 }
 export const httpClient = new HttpClient('http://localhost:4000/');
