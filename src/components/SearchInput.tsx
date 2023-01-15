@@ -1,41 +1,62 @@
 import axios from 'axios';
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { BsFillXCircleFill } from 'react-icons/bs';
 import styled from 'styled-components';
-import { httpClient } from '../model/httpClient';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { searchData, keyword } from '../store';
+import { useRecoilState } from 'recoil';
+import { searchIdxState, searchValueState } from '../store';
+import useDebounce from '../hooks/useDebounce';
+import useCache from '../hooks/useCache';
+import { sickState } from '../store/sickState';
 
 const SearchInput = () => {
   const [isFocused, setIsFocused] = useState(false);
-  // const { fetchData } = httpClient;
-  const setData = useSetRecoilState(searchData);
-  const [getkeyword, setKeyword] = useRecoilState(keyword);
-  const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === '') {
-      setData([]);
-      return;
+  const [sick, setSick] = useRecoilState(sickState);
+  const [searchValue, setSearchValue] = useRecoilState(searchValueState);
+  const [searchIdx, setSearchIdx] = useRecoilState(searchIdxState);
+  const debounce = useDebounce(searchValue);
+  const cache = useCache(debounce);
+
+  useEffect(() => {
+    if (debounce) {
+      if (cache) {
+        setSick(cache);
+      }
     }
-    axios.get(`http://localhost:4000/sick?q=${e.target.value}`).then(({ data }) => {
-      setKeyword(e.target.value);
-      setData(data);
-    });
+    if (debounce === '') {
+      setSick([]);
+    }
+  }, [debounce, setSick, cache]);
+
+  const listIdxHandler = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'ArrowUp') {
+      setSearchIdx((prev) => prev - 1);
+    } else if (e.key === 'ArrowDown') {
+      setSearchIdx((prev) => prev + 1);
+    } else if (e.key === 'Backspace') {
+      setSick([]);
+    } else if (e.key === 'Enter') {
+      setSearchValue(sick[searchIdx].sickNm);
+      setSearchIdx(0);
+    } else {
+      setSearchIdx(0);
+    }
   };
   const focusHandler = (bool: boolean) => {
     setIsFocused(bool);
   };
   return (
     <InputWrapper focus={isFocused ? 'focus' : 'none'}>
-      <SearchForm onSubmit={() => console.log('dd')}>
+      <SearchForm onKeyUp={listIdxHandler} onSubmit={(e) => e.preventDefault()}>
         <Input
           type="text"
           placeholder="질환명을 입력해 주세요"
           onBlur={() => focusHandler(false)}
           onFocus={() => focusHandler(true)}
-          onChange={onSearch}
+          onChange={(e) => setSearchValue(e.target.value)}
+          value={searchValue}
         />
-        <DeleteSearchBtn type="button" keyword={getkeyword} onClick={() => setKeyword('')}>
+        <DeleteSearchBtn type="button" keyword={searchValue} onClick={() => setSearchValue('')}>
           <BsFillXCircleFill size="24px" color="gray" />
         </DeleteSearchBtn>
         <SearchBtn type="button">
@@ -53,7 +74,7 @@ const InputWrapper = styled.div<Pick<InputStyle, 'focus'>>`
   border-radius: 45px;
 `;
 
-const SearchForm = styled.div`
+const SearchForm = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;

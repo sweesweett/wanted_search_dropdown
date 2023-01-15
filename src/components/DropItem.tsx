@@ -1,12 +1,12 @@
 import { SearchData } from '../types/search.type';
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
-import { keyword } from '../store';
+import { searchValueState } from '../store';
 import { useRecoilValue } from 'recoil';
 
 const DropItem = ({ data }: { data: string }) => {
-  const keywordVal = useRecoilValue(keyword);
-  const idx = data.indexOf(keywordVal);
+  const keywordVal = useRecoilValue(searchValueState);
+  const idx: number = data.indexOf(keywordVal);
 
   return (
     <ListItem>

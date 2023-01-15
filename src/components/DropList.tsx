@@ -1,11 +1,12 @@
 import { useRecoilValue } from 'recoil';
-import { searchData } from '../store';
+import { searchIdxState } from '../store';
+import { sickState } from '../store/sickState';
 import { SearchData } from '../types/search.type';
 import DropItem from './DropItem';
 import styled from 'styled-components';
 
 const DropList = () => {
-  const data = useRecoilValue(searchData);
+  const data = useRecoilValue(sickState);
   return (
     <List isExisted={data.length > 0 ? 'true' : 'false'}>
       {data?.map((item: SearchData) => (
