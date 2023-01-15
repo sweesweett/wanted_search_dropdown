@@ -18,7 +18,7 @@ export const searchIdxState = selector<number>({
   },
   set: ({ get, set }, value) => {
     const { length } = get(sickState);
-    if (value > 0 && value < length) {
+    if (value >= 0 && value < length) {
       set(searchIdx, value);
     }
   },

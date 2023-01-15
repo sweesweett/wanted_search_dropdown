@@ -11,19 +11,19 @@ const useCache = (keyword: string) => {
   if (!keyword) return null;
 
   const handleCache = async (url: string) => {
-    const encode = encodeURI(url);
+    const encode = `sick?q=${encodeURI(url)}`;
     const cacheStorage = await caches.open('searchQuery');
-    const cache = await cacheStorage.match(`sick?q=${encode}`);
+    const cache = await cacheStorage.match(encode);
     if (cache) {
       setCacheResult(await cache.json());
       return;
     }
-    await fetch(`http://localhost:4000/sick?q=${url}`)
+    await fetch(`http://localhost:4000/${encode}`)
       .then((data) => {
         const clone = data.clone();
-        cacheStorage.put(`sick?q=${encode}`, clone);
+        cacheStorage.put(encode, clone);
         setTimeout(() => {
-          cacheStorage.delete(`sick?q=${encode}`);
+          cacheStorage.delete(encode);
         }, 60 * 1000);
         return data.json();
       })

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { BsFillXCircleFill } from 'react-icons/bs';
@@ -35,6 +34,7 @@ const SearchInput = () => {
       setSearchIdx((prev) => prev + 1);
     } else if (e.key === 'Backspace') {
       setSick([]);
+      setSearchIdx(0);
     } else if (e.key === 'Enter') {
       setSearchValue(sick[searchIdx].sickNm);
       setSearchIdx(0);
@@ -56,10 +56,17 @@ const SearchInput = () => {
           onChange={(e) => setSearchValue(e.target.value)}
           value={searchValue}
         />
-        <DeleteSearchBtn type="button" keyword={searchValue} onClick={() => setSearchValue('')}>
+        <DeleteSearchBtn
+          type="button"
+          id="deleteBtn"
+          title="deleteSearchValue"
+          keyword={searchValue}
+          disabled={!searchValue}
+          onClick={() => setSearchValue('')}
+        >
           <BsFillXCircleFill size="24px" color="gray" />
         </DeleteSearchBtn>
-        <SearchBtn type="button">
+        <SearchBtn type="button" id="searchBtn" title="searchBtn">
           <BiSearch size="24px" color="white" />
         </SearchBtn>
       </SearchForm>
@@ -94,6 +101,9 @@ const SearchBtn = styled.button`
 `;
 const DeleteSearchBtn = styled.button<Pick<InputStyle, 'keyword'>>`
   opacity: ${({ keyword }) => (keyword !== '' ? '1' : '0')};
+  :disabled {
+    cursor: unset;
+  }
 `;
 interface InputStyle {
   focus: string;

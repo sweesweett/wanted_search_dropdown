@@ -1,15 +1,14 @@
-import { SearchData } from '../types/search.type';
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { searchValueState } from '../store';
 import { useRecoilValue } from 'recoil';
 
-const DropItem = ({ data }: { data: string }) => {
+const DropItem = ({ data, isSame }: { data: string; isSame: boolean }) => {
   const keywordVal = useRecoilValue(searchValueState);
   const idx: number = data.indexOf(keywordVal);
 
   return (
-    <ListItem>
+    <ListItem isSame={isSame}>
       <BiSearch size="20px" color="gray" />
       <ListContent>
         <span>{data.slice(0, idx)}</span>
@@ -20,12 +19,15 @@ const DropItem = ({ data }: { data: string }) => {
   );
 };
 
-const ListItem = styled.li`
-  padding: 25px 15px;
+const ListItem = styled.li<{ isSame: boolean }>`
+  padding: 8px;
+  height: 60px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  background-color: ${({ isSame }) => (isSame ? 'lightgray' : 'white')};
 `;
 const ListContent = styled.span`
   margin-left: 10px;
