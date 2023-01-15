@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { searchValueState } from '../store';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-const DropItem = ({ data, isSame }: { data: string; isSame: boolean }) => {
-  const keywordVal = useRecoilValue(searchValueState);
-  const idx: number = data.indexOf(keywordVal);
+const DropItem = ({ title, isSame }: { title: string; isSame: boolean }) => {
+  const [keywordVal, setKeywordVal] = useRecoilState(searchValueState);
+  const idx = title.indexOf(keywordVal);
 
   return (
-    <ListItem isSame={isSame}>
+    <ListItem isSame={isSame} onClick={() => setKeywordVal(title)}>
       <BiSearch size="20px" color="gray" />
       <ListContent>
-        <span>{data.slice(0, idx)}</span>
-        <EmpKeyword>{data.slice(idx, idx + keywordVal.length)}</EmpKeyword>
-        <span>{data.slice(idx + keywordVal.length)}</span>
+        <span>{title.slice(0, idx)}</span>
+        <EmpKeyword>{title.slice(idx, idx + keywordVal.length)}</EmpKeyword>
+        <span>{title.slice(idx + keywordVal.length)}</span>
       </ListContent>
     </ListItem>
   );

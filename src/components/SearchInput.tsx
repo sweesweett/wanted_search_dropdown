@@ -62,7 +62,10 @@ const SearchInput = () => {
           title="deleteSearchValue"
           keyword={searchValue}
           disabled={!searchValue}
-          onClick={() => setSearchValue('')}
+          onClick={() => {
+            setSearchValue('');
+            setSick([]);
+          }}
         >
           <BsFillXCircleFill size="24px" color="gray" />
         </DeleteSearchBtn>
