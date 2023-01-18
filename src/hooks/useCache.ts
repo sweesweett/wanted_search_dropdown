@@ -20,15 +20,18 @@ const useCache = (keyword: string) => {
     }
     await fetch(`http://localhost:4000/${encode}`)
       .then((data) => {
-        const clone = data.clone();
-        cacheStorage.put(encode, clone);
-        setTimeout(() => {
-          cacheStorage.delete(encode);
-        }, 60 * 1000);
-        return data.json();
+        if (data.ok) {
+          const clone = data.clone();
+          cacheStorage.put(encode, clone);
+          setTimeout(() => {
+            cacheStorage.delete(encode);
+          }, 60 * 1000);
+          return data.json();
+        }
+        throw data.status;
       })
       .then((data) => setCacheResult(data))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(`err :${err}`));
   };
   return cacheResult;
 };

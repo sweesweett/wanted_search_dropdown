@@ -13,9 +13,8 @@ const DropList = () => {
     <DropListWrapper isActive={!!searchValue}>
       {!data.length && searchValue && <span>검색 결과 없음</span>}
       <ul>
-        {data?.map((item: SickTypes, idx: number) => (
-          <DropItem key={item.sickCd} title={item.sickNm} isSame={idx === searchIdx} />
-        ))}
+        {data.length > 0 &&
+          data.map((item, idx) => <DropItem key={item.sickCd} title={item.sickNm} isSame={idx === searchIdx} />)}
       </ul>
     </DropListWrapper>
   );
