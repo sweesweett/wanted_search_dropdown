@@ -28,6 +28,7 @@ const SearchInput = () => {
   }, [debounce, setSick, cache]);
 
   const listIdxHandler = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === 'ArrowUp') {
       setSearchIdx((prev) => prev - 1);
     } else if (e.key === 'ArrowDown') {
@@ -48,7 +49,7 @@ const SearchInput = () => {
 
   return (
     <InputWrapper focus={isFocused ? 'focus' : 'none'}>
-      <SearchForm onKeyUp={listIdxHandler} onSubmit={(e) => e.preventDefault()}>
+      <SearchForm onKeyDown={listIdxHandler} onSubmit={(e) => e.preventDefault()}>
         <Input
           type="text"
           placeholder="질환명을 입력해 주세요"
