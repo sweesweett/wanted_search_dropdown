@@ -10,7 +10,6 @@ const DropList = () => {
   const data = useRecoilValue(sickState);
   const searchValue = useRecoilValue(searchValueState);
   const searchIdx = useRecoilValue(searchIdxState);
-  // const debounce = useDebounce(scroll, 1000);
   useEffect(() => {
     refList.current!.scrollTop = searchIdx <= 2 ? 0 : (searchIdx - 2) * 60;
   }, [searchIdx]);

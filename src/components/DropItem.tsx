@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 
 const DropItem = ({ title, isSame }: { title: string; isSame: boolean }) => {
   const [keywordVal, setKeywordVal] = useRecoilState(searchValueState);
-  const idx = title.indexOf(keywordVal);
+  const idx = title.toLowerCase().indexOf(keywordVal.toLowerCase());
 
   return (
     <ListItem isSame={isSame} onClick={() => setKeywordVal(title)}>
