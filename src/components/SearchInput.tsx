@@ -14,7 +14,7 @@ const SearchInput = () => {
   const [searchValue, setSearchValue] = useRecoilState(searchValueState);
   const [searchIdx, setSearchIdx] = useRecoilState(searchIdxState);
   const debounce = useDebounce(searchValue);
-  const cache = useCache(debounce);
+  const cache = useCache(debounce as string);
 
   useEffect(() => {
     if (debounce) {
