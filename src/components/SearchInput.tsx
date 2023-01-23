@@ -32,7 +32,7 @@ const SearchInput = () => {
       setSearchIdx((prev) => prev - 1);
     } else if (e.key === 'ArrowDown') {
       setSearchIdx((prev) => prev + 1);
-    } else if (e.key === 'Backspace') {
+    } else if (e.key === 'BackSpace') {
       setSick([]);
       setSearchIdx(0);
     } else if (e.key === 'Enter') {
@@ -45,6 +45,7 @@ const SearchInput = () => {
   const focusHandler = (bool: boolean) => {
     setIsFocused(bool);
   };
+
   return (
     <InputWrapper focus={isFocused ? 'focus' : 'none'}>
       <SearchForm onKeyUp={listIdxHandler} onSubmit={(e) => e.preventDefault()}>
@@ -65,6 +66,7 @@ const SearchInput = () => {
           onClick={() => {
             setSearchValue('');
             setSick([]);
+            setSearchIdx(0);
           }}
         >
           <BsFillXCircleFill size="24px" color="gray" />

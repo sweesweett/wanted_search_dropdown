@@ -1,11 +1,9 @@
 import { useRecoilValue } from 'recoil';
 import { searchIdxState, searchValueState } from '../store';
 import { sickState } from '../store/sickState';
-import { SickTypes } from '../types/sick.type';
 import DropItem from './DropItem';
 import styled from 'styled-components';
-import useDebounce from '../hooks/useDebounce';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 const DropList = () => {
   const refList = useRef<HTMLDivElement>(null);
@@ -36,10 +34,5 @@ const DropListWrapper = styled.div<{ isActive: boolean }>`
   position: relative;
   overflow-y: scroll;
 `;
-// const Ul = styled.ul<{ scroll: number }>`
-//   transform: translateY(${({ scroll }) => scroll || 0}px);
-//   height: calc(100% - ${({ scroll }) => -scroll || 0}px);
-//   transition: transform 0.4s;
-// `;
 
 export default DropList;
